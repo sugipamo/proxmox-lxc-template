@@ -31,7 +31,9 @@ MOUNTS=()
 cleanup() {
   local index
   for ((index=${#MOUNTS[@]}-1; index>=0; index--)); do
-    mountpoint -q "${MOUNTS[$index]}" && umount -l "${MOUNTS[$index]}" || true
+    if mountpoint -q "${MOUNTS[$index]}"; then
+      umount -l "${MOUNTS[$index]}" || true
+    fi
   done
 }
 trap cleanup EXIT INT TERM
