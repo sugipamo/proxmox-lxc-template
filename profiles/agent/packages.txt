@@ -1,0 +1,1 @@
+# Tailscale is installed by setup.sh from its official apt repository.

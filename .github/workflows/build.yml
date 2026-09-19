@@ -1,0 +1,43 @@
+name: Build template
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Image version without the v prefix
+        required: true
+        default: 0.1.0
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  static:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install shellcheck
+        run: sudo apt-get update && sudo apt-get install -y shellcheck
+      - run: ./scripts/test-static.sh
+
+  build:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install build dependencies
+        run: sudo apt-get update && sudo apt-get install -y zstd jq
+      - name: Build and verify
+        env:
+          VERSION: ${{ inputs.version }}
+        run: sudo --preserve-env=VERSION ./scripts/build.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: agent-debian13-amd64-v${{ inputs.version }}
+          path: dist/
+          if-no-files-found: error

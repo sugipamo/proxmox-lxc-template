@@ -1,0 +1,7 @@
+# Pinned Proxmox VE system container base image.
+BASE_OS=debian
+BASE_VERSION=13
+BASE_ARCH=amd64
+BASE_FILENAME=debian-13-standard_13.1-2_amd64.tar.zst
+BASE_URL=https://download.proxmox.com/images/system/debian-13-standard_13.1-2_amd64.tar.zst
+BASE_SHA256=ca6dffb91c3239fedc30af2c11389198140de1f1fc3d58082f3d9f4239b92e1b

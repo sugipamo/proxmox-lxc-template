@@ -1,0 +1,6 @@
+# One Debian package per line. Blank lines and comments are ignored.
+ca-certificates
+curl
+git
+jq
+openssh-client
