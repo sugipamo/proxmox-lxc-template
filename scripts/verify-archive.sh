@@ -22,6 +22,7 @@ for required in \
   './etc/os-release' \
   './etc/agent-image-release' \
   './etc/codex-cli-release' \
+  './usr/bin/codex' \
   './usr/bin/tailscale' \
   './usr/local/bin/codex'; do
   found=0

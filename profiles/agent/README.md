@@ -8,6 +8,7 @@ Included:
 - Tailscale from the official stable repository
 - `tailscaled` enabled for first boot
 - OpenAI Codex CLI, pinned by `codex.version`
+- `/usr/bin/codex` compatibility link for Tailscale SSH's minimal `PATH`
 
 Not included:
 

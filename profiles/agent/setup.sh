@@ -27,4 +27,6 @@ CODEX_HOME=/usr/local/lib/codex \
 rm -f /tmp/install-codex.sh
 install -d -m 0700 /root/.codex
 /usr/local/bin/codex --version
+# Tailscale SSH uses a minimal root PATH without /usr/local/bin.
+ln -sfn /usr/local/bin/codex /usr/bin/codex
 printf '%s\n' "$CODEX_VERSION" >/etc/codex-cli-release

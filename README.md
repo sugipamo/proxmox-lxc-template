@@ -13,7 +13,7 @@ Debian 13 / amd64 root filesystemテンプレートを生成します。
 
 - Debian 13、CA証明書、curl、git、jq、OpenSSH client
 - Tailscaleパッケージと有効化済み`tailscaled` service
-- バージョン固定したOpenAI Codex CLI（`/usr/local/bin/codex`）
+- バージョン固定したOpenAI Codex CLI（`/usr/local/bin/codex`、`/usr/bin/codex`）
 - profile、version、commit、build日時を示す `/etc/agent-image-release`
 
 イメージに含めないもの:
