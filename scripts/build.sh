@@ -80,16 +80,21 @@ if ((${#packages[@]})); then
 fi
 
 install -m 0755 "$REPO_ROOT/profiles/$PROFILE/setup.sh" "$ROOTFS/tmp/profile-setup.sh"
+if [[ -f "$REPO_ROOT/profiles/$PROFILE/codex.version" ]]; then
+  install -m 0644 "$REPO_ROOT/profiles/$PROFILE/codex.version" "$ROOTFS/tmp/codex.version"
+fi
 chroot "$ROOTFS" /tmp/profile-setup.sh
-rm -f "$ROOTFS/tmp/profile-setup.sh"
+rm -f "$ROOTFS/tmp/profile-setup.sh" "$ROOTFS/tmp/codex.version"
 
 GIT_COMMIT=$(git -C "$REPO_ROOT" rev-parse --verify HEAD 2>/dev/null || true)
 GIT_COMMIT=${GIT_COMMIT:-unknown}
+CODEX_VERSION=$(cat "$REPO_ROOT/profiles/$PROFILE/codex.version" 2>/dev/null || true)
 BUILD_DATE=$(date --utc --date="@$SOURCE_DATE_EPOCH" +%Y-%m-%dT%H:%M:%SZ)
 cat >"$ROOTFS/etc/agent-image-release" <<EOF
 PROFILE=$PROFILE
 VERSION=$VERSION
 BASE_IMAGE=$BASE_FILENAME
+CODEX_VERSION=${CODEX_VERSION:-not-installed}
 GIT_COMMIT=$GIT_COMMIT
 BUILD_DATE=$BUILD_DATE
 EOF
@@ -109,8 +114,8 @@ dpkg-query --root="$ROOTFS" -W -f='${Package}\t${Version}\n' | sort \
   >"$DIST_DIR/$OUTPUT_BASENAME.packages.txt"
 jq -n \
   --arg profile "$PROFILE" --arg version "$VERSION" --arg base "$BASE_FILENAME" \
-  --arg commit "$GIT_COMMIT" --arg built_at "$BUILD_DATE" \
-  '{profile:$profile,version:$version,base_image:$base,git_commit:$commit,built_at:$built_at}' \
+  --arg codex_version "${CODEX_VERSION:-}" --arg commit "$GIT_COMMIT" --arg built_at "$BUILD_DATE" \
+  '{profile:$profile,version:$version,base_image:$base,codex_version:$codex_version,git_commit:$commit,built_at:$built_at}' \
   >"$DIST_DIR/$OUTPUT_BASENAME.build-info.json"
 (cd "$DIST_DIR" && sha256sum "$OUTPUT_BASENAME".* >SHA256SUMS)
 "$SCRIPT_DIR/verify-archive.sh" "$OUTPUT_ARCHIVE"

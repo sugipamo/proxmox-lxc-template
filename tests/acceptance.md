@@ -14,6 +14,7 @@
 | Tailscale登録 | 2台が別端末として表示され、`tag:agent` を持つ |
 | 管理アクセス | 管理PCからTailscale SSHで両方へ接続できる |
 | Tailnet隔離 | Agentから許可していない他端末へ接続できない |
+| Codex CLI | `codex --version`が成功し、初期状態で未認証である |
 
 `10.77.x.1`（OPNsense LAN）へのping成功は合格条件にしません。現在のFirewall方針では
 GatewayへのICMPは拒否されるため、Internet疎通は上記のDNS/HTTPSで確認します。

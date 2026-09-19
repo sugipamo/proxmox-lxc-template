@@ -18,7 +18,12 @@ for entry in "${entries[@]}"; do
   [[ $entry != ../* && $entry != */../* ]] || die "traversal archive path: $entry"
 done
 
-for required in './etc/os-release' './etc/agent-image-release' './usr/bin/tailscale'; do
+for required in \
+  './etc/os-release' \
+  './etc/agent-image-release' \
+  './etc/codex-cli-release' \
+  './usr/bin/tailscale' \
+  './usr/local/bin/codex'; do
   found=0
   for entry in "${entries[@]}"; do
     if [[ $entry == "$required" ]]; then

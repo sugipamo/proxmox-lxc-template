@@ -15,6 +15,8 @@ rm -rf "$ROOTFS/var/lib/tailscale"/*
 # but clean these defensively if a future package adds it.
 rm -f "$ROOTFS/etc/ssh/ssh_host_"*
 rm -f "$ROOTFS/root/.bash_history"
+rm -f "$ROOTFS/root/.codex/auth.json" "$ROOTFS/root/.codex/history.jsonl"
+rm -rf "$ROOTFS/root/.codex/sessions" "$ROOTFS/root/.codex/log" "$ROOTFS/root/.codex/tmp"
 find "$ROOTFS/home" -xdev -type f -name '.bash_history' -delete 2>/dev/null || true
 rm -rf "$ROOTFS/var/lib/dhcp"/* "$ROOTFS/var/lib/NetworkManager"/* 2>/dev/null || true
 rm -rf "$ROOTFS/var/log"/* "$ROOTFS/var/tmp"/* "$ROOTFS/tmp"/*

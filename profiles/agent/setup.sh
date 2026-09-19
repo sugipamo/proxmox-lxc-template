@@ -16,3 +16,15 @@ apt-get install -y --no-install-recommends tailscale
 apt-get purge -y openssh-server openssh-sftp-server ssh
 apt-get autoremove -y
 systemctl enable tailscaled.service
+
+CODEX_VERSION=$(cat /tmp/codex.version)
+curl -fsSL https://chatgpt.com/codex/install.sh -o /tmp/install-codex.sh
+CODEX_RELEASE="$CODEX_VERSION" \
+CODEX_NON_INTERACTIVE=1 \
+CODEX_INSTALL_DIR=/usr/local/bin \
+CODEX_HOME=/usr/local/lib/codex \
+  sh /tmp/install-codex.sh --release "$CODEX_VERSION"
+rm -f /tmp/install-codex.sh
+install -d -m 0700 /root/.codex
+/usr/local/bin/codex --version
+printf '%s\n' "$CODEX_VERSION" >/etc/codex-cli-release

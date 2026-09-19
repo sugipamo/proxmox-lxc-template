@@ -13,11 +13,13 @@ Debian 13 / amd64 root filesystemテンプレートを生成します。
 
 - Debian 13、CA証明書、curl、git、jq、OpenSSH client
 - Tailscaleパッケージと有効化済み`tailscaled` service
+- バージョン固定したOpenAI Codex CLI（`/usr/local/bin/codex`）
 - profile、version、commit、build日時を示す `/etc/agent-image-release`
 
 イメージに含めないもの:
 
 - Tailscale identity / auth key / API token
+- Codex/ChatGPT/APIの認証情報、ユーザー設定、セッション履歴
 - SSH秘密鍵、Git認証情報、SSH server
 - 固定IP、個体固有hostname、machine-id、DHCP lease
 - `/dev/net/tun`の割り当て（Proxmox側で設定）

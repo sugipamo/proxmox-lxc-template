@@ -15,14 +15,21 @@ for path in \
   usr/bin/git \
   usr/bin/jq \
   usr/bin/tailscale \
-  usr/sbin/tailscaled; do
-  [[ -e "$ROOTFS/$path" ]] || die "missing required path: /$path"
+  usr/sbin/tailscaled \
+  usr/local/bin/codex \
+  etc/codex-cli-release; do
+  [[ -e "$ROOTFS/$path" || -L "$ROOTFS/$path" ]] || die "missing required path: /$path"
 done
 
 [[ ! -s "$ROOTFS/etc/machine-id" ]] || die '/etc/machine-id is not empty'
 [[ ! -e "$ROOTFS/var/lib/dbus/machine-id" ]] || die 'dbus machine-id is present'
 [[ ! -e "$ROOTFS/var/lib/tailscale/tailscaled.state" ]] || die 'Tailscale identity is present'
 [[ ! -e "$ROOTFS/usr/sbin/sshd" ]] || die 'OpenSSH server is present'
+[[ ! -e "$ROOTFS/root/.codex/auth.json" ]] || die 'Codex authentication is present'
+mkdir -p "$ROOTFS/tmp/codex-verify"
+chroot "$ROOTFS" /usr/bin/env CODEX_HOME=/tmp/codex-verify \
+  /usr/local/bin/codex --version >/dev/null 2>&1
+rm -rf "$ROOTFS/tmp/codex-verify"
 
 if find "$ROOTFS/etc/ssh" -maxdepth 1 -type f -name 'ssh_host_*_key' -print -quit 2>/dev/null | grep -q .; then
   die 'SSH host private key is present'
